@@ -3,15 +3,18 @@ import handle from './msgController.js'
 
 export let cookies;
 
+const account = '';
+const passwd = '';
+
 (async () => {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
     await page.goto('https://passport2.chaoxing.com/login');
     const phoneInputBoxSelector = '#phone';
-    await page.type(phoneInputBoxSelector, '18368633393');
+    await page.type(phoneInputBoxSelector, account);
     const pwdInputBoxSelector = '#pwd';
-    await page.type(pwdInputBoxSelector, 'Xdu88888888.1');
+    await page.type(pwdInputBoxSelector, passwd);
     const loginBtnSelector = '#loginBtn';
     await page.waitForSelector(loginBtnSelector);
     await page.click(loginBtnSelector);
