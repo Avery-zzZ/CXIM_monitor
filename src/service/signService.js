@@ -1,5 +1,6 @@
 import axios from "axios";
 import { cookies } from "../index.js";
+import Config from "../config.js";
 
 export function handleSign(activeObj) {
     if (activeObj?.aid && activeObj.courseInfo) {
@@ -8,6 +9,7 @@ export function handleSign(activeObj) {
                 (activeInfo) => {
                     if (activeInfo?.data?.otherId != undefined) {
                         let signTypeStr = logNewSign(activeObj, activeInfo);
+                        let result = sign(signTypeStr, activeObj, activeInfo);
                     }
                 }
             )
@@ -52,7 +54,7 @@ function logNewSign(activeObj, activeInfo) {
                 type = '位置签到（限制）';
             }
             break;
-        case 5 :
+        case 5:
             type = '密码签到';
             break;
         default:
@@ -60,8 +62,8 @@ function logNewSign(activeObj, activeInfo) {
             break;
     }
     logAfterSpaces('- Type      ' + type)
-    if (type == '手势签到'|| type == '密码签到') {
-        logAfterSpaces('- SignCode  ' + activeInfo.data.signCode)  
+    if (type == '手势签到' || type == '密码签到') {
+        logAfterSpaces('- SignCode  ' + activeInfo.data.signCode)
     }
     return type;
 }
@@ -88,4 +90,58 @@ function getCookieStr() {
         }
     });
     return retStr;
+}
+
+const presignUrl = "https://mobilelearn.chaoxing.com/newsign/preSign"
+const signUrl = "https://mobilelearn.chaoxing.com/pptSign/stuSignajax"
+async function sign(signTypeStr, activeObj, activeInfo) {
+    await axios.get(presignUrl, {
+        params: {
+            "activePrimaryId": activeObj.aid,
+            "genral": "1",
+            "sys": "1",
+            "ls": "1",
+            "appType": "15",
+            "tid": "",
+            "ut": "s",
+        },
+        headers: {
+            Cookie: getCookieStr()
+        }
+    }).then(function (response) {
+        console.log(response.data);
+    })
+
+    let baseParams = { activeId: activeObj.aid };
+    let extraParams = await getExtraParams(signTypeStr, activeObj, activeInfo);
+
+    await axios.get(signUrl, {
+        params: Object.assign({}, baseParams, extraParams),
+        headers: {
+            Cookie: getCookieStr()
+        }
+    }).then(response => {
+        console.log(response.data);
+    })
+}
+
+function getExtraParams(signTypeStr, activeObj, activeInfo) {
+    switch (signTypeStr) {
+        case '普通签到':
+        case '手势签到':
+        case '密码签到':
+            return undefined;
+        case '位置签到（自由）':
+        case '位置签到（限制）':
+            return activeInfo.data.locationLatitude ?
+                {
+                    address: activeInfo.data.locationText,
+                    latitude: activeInfo.data.locationLatitude,
+                    latitude_gd: activeInfo.data.locationLatitude_gd,
+                    longitude: activeInfo.data.locationLongitude,
+                    longitude_gd: activeInfo.data.locationLongitude_gd,
+                    ifTiJiao: "1",
+                } : Config.defaultLocationParams
+
+    }
 }

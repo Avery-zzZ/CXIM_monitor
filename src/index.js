@@ -1,10 +1,8 @@
 import puppeteer from 'puppeteer';
 import handle from './msgController.js'
+import Config from './config.js';
 
 export let cookies;
-
-const account = '';
-const passwd = '';
 
 (async () => {
     const browser = await puppeteer.launch({ headless: true });
@@ -12,9 +10,9 @@ const passwd = '';
 
     await page.goto('https://passport2.chaoxing.com/login');
     const phoneInputBoxSelector = '#phone';
-    await page.type(phoneInputBoxSelector, account);
+    await page.type(phoneInputBoxSelector, Config.account);
     const pwdInputBoxSelector = '#pwd';
-    await page.type(pwdInputBoxSelector, passwd);
+    await page.type(pwdInputBoxSelector, Config.passwd);
     const loginBtnSelector = '#loginBtn';
     await page.waitForSelector(loginBtnSelector);
     await page.click(loginBtnSelector);
