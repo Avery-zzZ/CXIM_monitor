@@ -6,10 +6,14 @@ export function handleSign(activeObj) {
     if (activeObj?.aid && activeObj.courseInfo) {
         getSignInfo(activeObj.aid)
             .then(
-                (activeInfo) => {
+                async (activeInfo) => {
                     if (activeInfo?.data?.otherId != undefined) {
                         let signTypeStr = logNewSign(activeObj, activeInfo);
-                        let result = sign(signTypeStr, activeObj, activeInfo);
+                        let result = await sign(signTypeStr, activeObj, activeInfo);
+                        result == "success" ?
+                            logAfterSpaces("\x1b[32mComplete\x1b[0m") :
+                            logAfterSpaces("\x1b[31mFail\x1b[0m");
+
                     }
                 }
             )
@@ -115,13 +119,13 @@ async function sign(signTypeStr, activeObj, activeInfo) {
     let baseParams = { activeId: activeObj.aid };
     let extraParams = await getExtraParams(signTypeStr, activeObj, activeInfo);
 
-    await axios.get(signUrl, {
+    return axios.get(signUrl, {
         params: Object.assign({}, baseParams, extraParams),
         headers: {
             Cookie: getCookieStr()
         }
     }).then(response => {
-        console.log(response.data);
+        return response.data;
     })
 }
 

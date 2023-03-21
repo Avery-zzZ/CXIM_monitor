@@ -7,6 +7,7 @@ export default function route(msgObj) {
             switch (activeObj.atype) {
                 //sign
                 case 0:
+                case 2:
                     handleSign(activeObj);
                     break;
             }
