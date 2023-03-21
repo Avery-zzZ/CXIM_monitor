@@ -109,7 +109,7 @@ async function sign(signTypeStr, activeObj, activeInfo) {
             Cookie: getCookieStr()
         }
     }).then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
     })
 
     let baseParams = { activeId: activeObj.aid };
@@ -133,15 +133,17 @@ function getExtraParams(signTypeStr, activeObj, activeInfo) {
             return undefined;
         case '位置签到（自由）':
         case '位置签到（限制）':
-            return activeInfo.data.locationLatitude ?
+            let locationObj = activeInfo.data.locationLatitude ?
                 {
                     address: activeInfo.data.locationText,
                     latitude: activeInfo.data.locationLatitude,
                     latitude_gd: activeInfo.data.locationLatitude_gd,
                     longitude: activeInfo.data.locationLongitude,
                     longitude_gd: activeInfo.data.locationLongitude_gd,
-                    ifTiJiao: "1",
-                } : Config.defaultLocationParams
-
+                } : Config.LocationParams[activeObj.courseInfo.coursename] ?
+                    Config.LocationParams[activeObj.courseInfo.coursename] :
+                    Config.LocationParams.default
+            locationObj.ifTiJiao = '1';
+            return locationObj;
     }
 }
