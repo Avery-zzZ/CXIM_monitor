@@ -1,5 +1,7 @@
 import axios from "axios";
-import { cookies } from "../index.js";
+
+import { log } from "../util/log.js";
+// import { cookies } from "../login.js";
 import Config from "../config.js";
 
 export function handleSign(activeObj) {
@@ -11,8 +13,8 @@ export function handleSign(activeObj) {
                         let signTypeStr = logNewSign(activeObj, activeInfo);
                         let result = await sign(signTypeStr, activeObj, activeInfo);
                         result == "success" || result == "您已签到过了" ?
-                            logAfterSpaces("\x1b[32mComplete\x1b[0m") :
-                            logAfterSpaces("\x1b[31mFail\x1b[0m");
+                            log.printAfterSpaces("\x1b[32mComplete\x1b[0m") :
+                            log.printAfterSpaces("\x1b[31mFail\x1b[0m");
 
                     }
                 }
@@ -20,18 +22,11 @@ export function handleSign(activeObj) {
     }
 }
 
-const timeDivider = '  ';
-let logTime = new Date().toLocaleString();
-const spaces = ' '.repeat(timeDivider.length + logTime.length);
-function logAfterSpaces(str) {
-    console.log(spaces + str);
-}
 function logNewSign(activeObj, activeInfo) {
-    logTime = new Date().toLocaleString();
-    console.log(logTime + timeDivider + 'New sign activity found');
-    logAfterSpaces('- Course    ' + activeObj.courseInfo.coursename);
-    logAfterSpaces('- Teacher   ' + activeObj.courseInfo.teacherfactor);
-    logAfterSpaces('- ActiveId  ' + activeObj.aid);
+    log.print('New sign activity found');
+    log.printAfterSpaces('- Course    ' + activeObj.courseInfo.coursename);
+    log.printAfterSpaces('- Teacher   ' + activeObj.courseInfo.teacherfactor);
+    log.printAfterSpaces('- ActiveId  ' + activeObj.aid);
     let type;
     switch (activeInfo.data.otherId) {
         case 0:
@@ -65,9 +60,9 @@ function logNewSign(activeObj, activeInfo) {
             type = '未知';
             break;
     }
-    logAfterSpaces('- Type      ' + type)
+    log.printAfterSpaces('- Type      ' + type)
     if (type == '手势签到' || type == '密码签到') {
-        logAfterSpaces('- SignCode  ' + activeInfo.data.signCode)
+        log.printAfterSpaces('- SignCode  ' + activeInfo.data.signCode)
     }
     return type;
 }
@@ -88,7 +83,7 @@ function getSignInfo(aid) {
 
 function getCookieStr() {
     let retStr = "";
-    cookies.forEach(ele => {
+    global.cookies.forEach(ele => {
         if (ele.domain == '.chaoxing.com') {
             retStr += ele.name + '=' + ele.value + ';';
         }
