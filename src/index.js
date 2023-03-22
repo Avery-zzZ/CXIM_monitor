@@ -3,7 +3,7 @@ import handle from './msgController.js'
 import { login } from './login.js';
 import { log } from './util/log.js'
 
-export const browser = await puppeteer.launch({ headless: false });
+export const browser = await puppeteer.launch({ headless: true });
 
 await login();
 
