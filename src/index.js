@@ -27,7 +27,12 @@ export let cookies;
             handle(temp);
         }
     });
-    
+
+    page.on('dialog', async dialog => {
+        console.log(dialog.message());
+        await page.reload();
+    });
+
     await page.goto('http://im.chaoxing.com/webim/me');
 
     // await page.close()

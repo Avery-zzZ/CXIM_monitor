@@ -10,7 +10,7 @@ export function handleSign(activeObj) {
                     if (activeInfo?.data?.otherId != undefined) {
                         let signTypeStr = logNewSign(activeObj, activeInfo);
                         let result = await sign(signTypeStr, activeObj, activeInfo);
-                        result == "success" ?
+                        result == "success" || result == "您已签到过了" ?
                             logAfterSpaces("\x1b[32mComplete\x1b[0m") :
                             logAfterSpaces("\x1b[31mFail\x1b[0m");
 
