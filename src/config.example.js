@@ -1,17 +1,17 @@
 export default {
     //超星账号密码
-    account: "18368633393",
-    passwd: "Xdu88888888.1", 
+    account: "",
+    passwd: "", 
 
     //位置签到（自由）地点, 优先匹配课名
     LocationParams: {
         //默认地点
         default: {
-            address : "中国陕西省西安市长安区兴隆街道内环北路西安电子科技大学(南校区)",
-            latitude : "34.1332077905055",
-            latitude_gd : "34.126916",
-            longitude : "108.8371326413889",
-            longitude_gd : "108.830711",
+            address : "中国海北省湖口市美菊国际机场",
+            latitude : "35.1332077905055",
+            latitude_gd : "35.126916",
+            longitude : "109.8371326413889",
+            longitude_gd : "109.830711",
         },
         //可以自定义某节课的位置, address/latitude/longitude这三个属性是必要的
         //注意：课程名称要和超星系统里的名称一样
