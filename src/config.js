@@ -7,7 +7,7 @@ export default {
     LocationParams: {
         //默认地点
         default: {
-            address : "西安市长安区西安电子科技大学(南校区)大学生活动中心2层 西安电子科技大学南校区-大学生活动中心小剧场",
+            address : "中国陕西省西安市长安区兴隆街道内环北路西安电子科技大学(南校区)",
             latitude : "34.1332077905055",
             latitude_gd : "34.126916",
             longitude : "108.8371326413889",
