@@ -1,7 +1,7 @@
 import { log } from './util/log.js';
 import { sleep } from './util/sleep.js';
 import { browser } from './index.js'
-import Config from './config.js';
+import Config from '../config.js';
 
 export async function login() {
     if (!await refreshCookies()) {

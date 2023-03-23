@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { log } from "../util/log.js";
 // import { cookies } from "../login.js";
-import Config from "../config.js";
+import Config from "../../config.js";
 
 export function handleSign(activeObj) {
     if (activeObj?.aid && activeObj.courseInfo) {
